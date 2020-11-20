@@ -1,0 +1,7 @@
+{
+  "name": "instantAusWeiss",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
