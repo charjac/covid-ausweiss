@@ -35,6 +35,10 @@ const Menu: React.FC = () => {
     dispatch({ type: 'SET_SIGNATURE', payload: uri });
   };
 
+  const handleBirthPlaceChange = (evt: CustomEvent<InputChangeEventDetail>) => {
+    dispatch({ type: 'SET_BIRTHPLACE', payload: evt.detail.value });
+  };
+
   return (
     <IonMenu contentId="main" type="overlay">
       <IonContent>
@@ -42,7 +46,7 @@ const Menu: React.FC = () => {
           <IonListHeader>Vos Informations</IonListHeader>
 
           <IonItem>
-            <IonLabel position="floating">FirstName</IonLabel>
+            <IonLabel position="floating">Prenom</IonLabel>
             <IonInput
               value={state.firstName}
               onIonChange={handleFirstNameChange}
@@ -50,7 +54,7 @@ const Menu: React.FC = () => {
           </IonItem>
 
           <IonItem>
-            <IonLabel position="floating">LastName</IonLabel>
+            <IonLabel position="floating">Nom de famille</IonLabel>
             <IonInput
               value={state.lastName}
               onIonChange={handleLastNameChange}
@@ -58,12 +62,20 @@ const Menu: React.FC = () => {
           </IonItem>
 
           <IonItem>
-            <IonLabel>Birthdate</IonLabel>
+            <IonLabel>Date de naissance</IonLabel>
             <IonDatetime
               displayFormat="DD/MM/YYYY"
-              placeholder="Pick your birthdate"
+              placeholder="Votre date de naissance"
               value={state.birthDate}
               onIonChange={handleBirthDateChange}
+            />
+          </IonItem>
+
+          <IonItem>
+            <IonLabel position="floating">Lieu de naissance</IonLabel>
+            <IonInput
+              value={state.birthPlace}
+              onIonChange={handleBirthPlaceChange}
             />
           </IonItem>
 
@@ -73,6 +85,7 @@ const Menu: React.FC = () => {
           />
 
           <IonNote>{state.address}</IonNote>
+          <IonNote>{state.city}</IonNote>
         </IonList>
       </IonContent>
     </IonMenu>

@@ -12,10 +12,11 @@ const Signature: React.FC<SignatureProps> = ({ onSave, uri }) => {
 
   useEffect(() => {
     canvasRef.current.fromDataURL(uri);
-  }, [canvasRef.current, uri]);
+    // eslint-disable-next-line
+  }, [canvasRef.current]);
 
   const handleSave = () => {
-    onSave(canvasRef.current.toDataURL('image/png'));
+    onSave(canvasRef.current.toDataURL('image/jpg'));
   };
 
   const handleClear = () => {

@@ -4,9 +4,12 @@ import React, {
   useContext,
   useEffect,
   useReducer,
+  useState,
 } from 'react';
-import Localization from './localization';
+import qrcode from 'qrcode';
 
+import { formatDate, get10minAgo } from '../helpers/date';
+import Localization from './localization';
 import appReducer, { AppAction, AppState } from './reducer';
 
 export type Dispatch = (action: AppAction) => void;
@@ -29,7 +32,7 @@ const withCache = (reducer: Reducer<any, any>) => {
   };
 };
 
-const Context = createContext<AppState>(initialState);
+const Context = createContext<AppState & { qrCodeURI?: string }>(initialState);
 const DispatchContext = createContext<Dispatch | undefined>(undefined);
 
 interface StateProviderProps {
@@ -41,6 +44,7 @@ const StateProvider: React.FC<StateProviderProps> = ({
   localization,
 }) => {
   const [state, dispatch] = useReducer(withCache(appReducer), initialState);
+  const [qrCodeURI, setQrCodeURI] = useState<string>();
 
   useEffect(() => {
     localization.getAdress().subscribe(payload => {
@@ -49,9 +53,31 @@ const StateProvider: React.FC<StateProviderProps> = ({
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {});
+
+  useEffect(() => {
+    qrcode
+      .toDataURL(
+        `Cree le: ${formatDate(new Date())} a ${get10minAgo(new Date()).replace(
+          ':',
+          'h',
+        )};
+Nom: ${state.lastName};
+Prenom: ${state.firstName};
+Naissance: ${state.birthDate} a ${state.birthPlace};
+Adresse: ${state.address} ${state.city};
+Sortie: ${formatDate(new Date())} a ${get10minAgo(new Date())};
+Motifs: sports_animaux;
+      `,
+      )
+      .then(setQrCodeURI);
+  }, [state]);
+
   return (
     <DispatchContext.Provider value={dispatch}>
-      <Context.Provider value={state}>{children}</Context.Provider>
+      <Context.Provider value={{ ...state, qrCodeURI }}>
+        {children}
+      </Context.Provider>
     </DispatchContext.Provider>
   );
 };
