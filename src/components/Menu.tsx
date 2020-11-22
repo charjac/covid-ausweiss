@@ -9,10 +9,9 @@ import {
   IonNote,
   IonDatetime,
 } from '@ionic/react';
-
 import { InputChangeEventDetail } from '@ionic/core';
-
 import React from 'react';
+import Signature from './Signature';
 import { useGlobalState } from '../core/context';
 
 import './Menu.css';
@@ -30,6 +29,10 @@ const Menu: React.FC = () => {
 
   const handleBirthDateChange = (evt: CustomEvent<InputChangeEventDetail>) => {
     dispatch({ type: 'SET_BIRTHDATE', payload: evt.detail.value });
+  };
+
+  const handleSignatureURIChange = (uri: string) => {
+    dispatch({ type: 'SET_SIGNATURE', payload: uri });
   };
 
   return (
@@ -63,6 +66,11 @@ const Menu: React.FC = () => {
               onIonChange={handleBirthDateChange}
             />
           </IonItem>
+
+          <Signature
+            uri={state.signatureURI}
+            onSave={handleSignatureURIChange}
+          />
 
           <IonNote>{state.address}</IonNote>
         </IonList>

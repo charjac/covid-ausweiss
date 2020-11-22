@@ -6,12 +6,14 @@ export interface AppState {
   birthDate?: string;
   address?: string;
   timestamp?: number;
+  signatureURI?: string;
 }
 
 export type AppActions =
   | 'SET_FIRSTNAME'
   | 'SET_LASTNAME'
   | 'SET_BIRTHDATE'
+  | 'SET_SIGNATURE'
   | 'SET_ADDRESS';
 
 export interface AppAction {
@@ -41,6 +43,11 @@ const reducer: Reducer<AppState, AppAction> = (state, action) => {
         ...state,
         address: action.payload,
         timestamp: Date.now(),
+      };
+    case 'SET_SIGNATURE':
+      return {
+        ...state,
+        signatureURI: action.payload,
       };
     default:
       return state;
